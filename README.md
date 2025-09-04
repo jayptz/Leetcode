@@ -1,3 +1,3 @@
 # Leetcode
-Leetcode Answers
-Mainly just for interview preparation.
+### Leetcode Answers
+* Interview prep.
