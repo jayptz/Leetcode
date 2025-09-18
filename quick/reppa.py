@@ -48,9 +48,7 @@ def test_add():
 #
 
 
-#
-# 👨‍💻 Serge (CTO at Reppa): Hi Jay, nice to meet you. Let’s jump right in.
-# Here’s a warmup:
+
 # 👉 Problem: Write a function that takes a list of integers and returns only the even numbers.
 # Input: [1, 2, 3, 4, 5, 6]
 # Output: [2, 4, 6]
@@ -59,8 +57,6 @@ def test_add():
 # 2. Write the code.
 # 3. Walk through a test case.
 #
-# You said: give me the script/answer
-# ChatGPT said: (scripted guidance and examples)
 #
 # Step 1 (explanation): Loop through numbers; keep those where num % 2 == 0.
 # Step 2 (code):
