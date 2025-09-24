@@ -1,0 +1,138 @@
+./fibonacci
+------------------
+Test: iterative_fibonacci(n)
+
+iterative_fibonacci(0): 0
+iterative_fibonacci(1): 1
+iterative_fibonacci(2): 1
+iterative_fibonacci(3): 2
+iterative_fibonacci(4): 3
+iterative_fibonacci(46): 1836311903
+iterative_fibonacci(47): overflow
+
+------------------
+Test: recursive_fibonacci(n)
+
+recursive_fibonacci(0): 0
+recursive_fibonacci(1): 1
+recursive_fibonacci(2): 1
+recursive_fibonacci(3): 2
+recursive_fibonacci(4): 3
+
+------------------
+Test: dpbu_fibonacci(n)
+
+dpbu_fibonacci(0): 0
+dpbu_fibonacci(1): 1
+dpbu_fibonacci(2): 1
+dpbu_fibonacci(3): 2
+dpbu_fibonacci(4): 3
+dpbu_fibonacci(46): 1836311903
+dpbu_fibonacci(47): overflow
+
+------------------
+Test: dptd_fibonacci(n)
+
+dptd_fibonacci(0): 0
+dptd_fibonacci(1): 1
+dptd_fibonacci(2): 1
+dptd_fibonacci(3): 2
+dptd_fibonacci(4): 3
+dptd_fibonacci(46): 1836311903
+dptd_fibonacci(47): overflow
+
+
+./matrix
+------------------
+Test: norm
+
+v:
+1.00 2.00 
+
+norm(v): 2.24
+
+------------------
+Test: normalize
+
+v:
+3.00 4.00 
+
+normalized v:
+0.60 0.80 
+
+------------------
+Test: matrix_scalar_multiply
+
+A:
+1.00 2.00 
+3.00 4.00 
+
+2*A:
+2.00 4.00 
+6.00 8.00 
+
+------------------
+Test: matrix_transpose
+
+A:
+1.00 2.00 3.00 
+4.00 5.00 6.00 
+
+A^T:
+1.00 4.00 
+2.00 5.00 
+3.00 6.00 
+
+------------------
+Test: matrix_add
+
+A:
+1.00 2.00 
+3.00 4.00 
+
+B:
+5.00 6.00 
+7.00 8.00 
+
+A+B:
+6.00 8.00 
+10.00 12.00 
+
+------------------
+Test: matrix_multiply
+
+A:
+1.00 2.00 3.00 
+4.00 5.00 6.00 
+
+B:
+7.00 8.00 
+9.00 10.00 
+11.00 12.00 
+
+A*B:
+58.00 64.00 
+139.00 154.00 
+
+./polynomial
+------------------
+Test: horner
+
+p(x): 1.00*x^3+2.00*x^2+3.00*x^1+4.00
+horner(p 0.00): 4.00
+horner(p 1.00): 10.00
+horner(p 10.00): 1234.00
+
+------------------
+Test: derivative
+
+p'(x): 3.00*x^2+4.00*x^1+3.00
+------------------
+Test: newton
+
+p(-2.00): -2.00
+root: -1.65
+p(-1.65): -0.00
+p(-1.00): 2.00
+root: -1.65
+p(-1.65): -0.00

@@ -14,7 +14,16 @@
         return 1;
     }else{
         int a = recursive_fibonacci(n - 1);
+        if (a == -1){
+            return -1;
+        }
         int b = recursive_fibonacci(n - 2);
+        if (b == -1){
+            return -1;
+        }
+        if (a > 2147483647 - b){
+            return -1;
+        }
         return a + b;
     }
 
@@ -37,6 +46,9 @@
     int f1 = 0;
     int f2 = 1;
     for (int i = 2; i <= n; i++){
+        if (f2 > 2147483647 - f1){
+            return -1;
+        }
         int temp = f1 + f2;
         f1 = f2;
         f2 = temp;
@@ -68,7 +80,10 @@
    f[0] = 0;
    f[1] = 1;
    for (int i = 2; i <= n; i++){
-       f[i] = f[i - 1] + f[i - 2];
+      if (f[i - 1] > 2147483647 - f[i - 2]){
+          return -1;
+      }
+      f[i] = f[i - 1] + f[i - 2];
    }
    return f[n];
  }
@@ -87,8 +102,17 @@
        return f[n];
    }
 
-   int a = dptd_fibonacci(f, n - 1);
-   int b = dptd_fibonacci(f, n - 2);
-   f[n] = a + b;
-   return f[n];
+  int a = dptd_fibonacci(f, n - 1);
+  if (a == -1){
+      return -1;
+  }
+  int b = dptd_fibonacci(f, n - 2);
+  if (b == -1){
+      return -1;
+  }
+  if (a > 2147483647 - b){
+      return -1;
+  }
+  f[n] = a + b;
+  return f[n];
  }
