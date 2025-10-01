@@ -1,26 +1,17 @@
-
+/* myword.c */
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include "mystring.h"
+#include <ctype.h>
 #include "myword.h"
+#include "mystring.h"   /* for str_lower(char*) */
 
+#ifndef MAX_LINE_LEN
 #define MAX_LINE_LEN 1000
+#endif
+
+#ifndef MAX_WORDS
 #define MAX_WORDS 1000
-
-/*
- * Define enumeration type BOOLEAN with value FALSE = 0 and TRUE 1.
- */
-
-/*
- * Define structure type WORD consists of char word[20] to store a word, int count to hold frequency of the word.
- */
-
-/*
- * Define structure type WORDSTATS consisting of int line_count, int word_count, and int keyword_count to represent
- * to represent the number of lines, number of all words, and the number of different non-common-word in text data.
- */
-
+#endif
 
 /*
  * Load word data from file, and insert words a directory represented by char array.
@@ -32,33 +23,22 @@
  */
 int create_dictionary(FILE *fp, char *dictionary) {
     char line[MAX_LINE_LEN];
-    int word_count = 0;
-    int dict_pos = 0;
-    
-    while (fgets(line, MAX_LINE_LEN, fp) != NULL) {
-        str_trim(line);
-        str_lower(line);
-        
-        char *word = strtok(line, " \t\n");
-        while (word != NULL) {
-            // Check if word is not already in dictionary
-            if (!contain_word(dictionary, word)) {
-                // Add word to dictionary (assuming dictionary is a simple concatenated string)
-                if (dict_pos > 0) {
-                    dictionary[dict_pos++] = '|'; // separator
-                }
-                strcpy(dictionary + dict_pos, word);
-                dict_pos += strlen(word);
-                word_count++;
-            }
-            word = strtok(NULL, " \t\n");
+    int count = 0;
+
+    while (fgets(line, sizeof(line), fp)) {
+        char *tok = strtok(line, " ,.\n\t\r");
+        while (tok) {
+            str_lower(tok);
+
+            strcat(dictionary, tok);
+            strcat(dictionary, " ");
+
+            count++;
+            tok = strtok(NULL, " ,.\n\t\r");
         }
     }
-    
-    dictionary[dict_pos] = '\0';
-    return word_count;
+    return count;
 }
-
 
 /*
  * Determine if a given word is contained in the given dictionary.  
@@ -69,73 +49,59 @@ int create_dictionary(FILE *fp, char *dictionary) {
  * @return - TRUE if the word is in the dictionary, FALSE otherwise.   
  */
 BOOLEAN contain_word(char *dictionary, char *word) {
-    if (dictionary == NULL || word == NULL || strlen(dictionary) == 0) {
-        return FALSE;
-    }
-    
-    char *dict_copy = malloc(strlen(dictionary) + 1);
-    strcpy(dict_copy, dictionary);
-    
-    char *dict_word = strtok(dict_copy, "|");
-    while (dict_word != NULL) {
-        if (strcmp(dict_word, word) == 0) {
-            free(dict_copy);
-            return TRUE;
-        }
-        dict_word = strtok(NULL, "|");
-    }
-    
-    free(dict_copy);
-    return FALSE;
+    char temp[21];
+    strncpy(temp, word, 20);
+    temp[20] = '\0';
+    str_lower(temp);
+
+    char needle[24];
+    snprintf(needle, sizeof(needle), "%s ", temp);
+
+    return (strstr(dictionary, needle) != NULL) ? TRUE : FALSE;
 }
 
 /*
- * Process text data from a file for word statistic information of line count, word count, keyword count, and frequency of keyword.   
+ * Process text data from a file for word statistic information of line count, word count, keyword count, 
+ * and frequency of keyword.   
  * 
- * @param *fp -  FILE pointer of input text data file. .
+ * @param *fp -  FILE pointer of input text data file.
  * @param *words  -  WORD array for keywords and their frequencies.
  * @param *dictionary  -  stop-word/common-word dictionary.    
  *                     
  * @return - WORDSTATS value of processed word stats information.   
  */
 WORDSTATS process_words(FILE *fp, WORD *words, char *dictionary) {
-    WORDSTATS stats = {0, 0, 0};
+    WORDSTATS stats = (WORDSTATS){0,0,0};
     char line[MAX_LINE_LEN];
-    int word_index = 0;
-    
-    while (fgets(line, MAX_LINE_LEN, fp) != NULL) {
+
+    while (fgets(line, sizeof(line), fp)) {
         stats.line_count++;
-        str_trim(line);
-        str_lower(line);
-        
-        char *word = strtok(line, " \t\n");
-        while (word != NULL) {
+
+        char *tok = strtok(line, " ,.\n\t\r");
+        while (tok) {
             stats.word_count++;
-            
-            // Check if word is not in dictionary (i.e., it's a keyword)
-            if (!contain_word(dictionary, word)) {
-                // Check if word already exists in words array
+
+            str_lower(tok);
+
+            if (!contain_word(dictionary, tok)) {
                 int found = 0;
-                for (int i = 0; i < word_index; i++) {
-                    if (strcmp(words[i].word, word) == 0) {
+                for (int i = 0; i < stats.keyword_count; i++) {
+                    if (strcmp(words[i].word, tok) == 0) {
                         words[i].count++;
                         found = 1;
                         break;
                     }
                 }
-                
-                // If word not found, add it to words array
-                if (!found && word_index < MAX_WORDS) {
-                    strcpy(words[word_index].word, word);
-                    words[word_index].count = 1;
-                    word_index++;
+                if (!found && stats.keyword_count < MAX_WORDS) {
+                    strncpy(words[stats.keyword_count].word, tok, sizeof(words[stats.keyword_count].word) - 1);
+                    words[stats.keyword_count].word[sizeof(words[stats.keyword_count].word) - 1] = '\0';
+                    words[stats.keyword_count].count = 1;
                     stats.keyword_count++;
                 }
             }
-            
-            word = strtok(NULL, " \t\n");
+
+            tok = strtok(NULL, " ,.\n\t\r");
         }
     }
-    
     return stats;
 }
