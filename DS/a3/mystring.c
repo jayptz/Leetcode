@@ -55,30 +55,26 @@ void str_trim(char *s) {
     char *start = s;
     char *end;
     
-    // Skip leading whitespace
     while (isspace(*start)) {
         start++;
     }
     
-    // If all characters are whitespace
     if (*start == '\0') {
         *s = '\0';
         return;
     }
     
-    // Find end of string
     end = start;
     while (*end) {
         end++;
     }
-    end--; // Move to last character
+    end--; 
     
-    // Skip trailing whitespace
+    
     while (end > start && isspace(*end)) {
         end--;
     }
     
-    // Move characters to beginning of string
     char *dest = s;
     while (start <= end) {
         *dest = *start;
