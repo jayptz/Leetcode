@@ -1,10 +1,8 @@
-stats:value
-count:10
-mean:55.0
-stddev:28.7
-median:55.0
+Record count: 10
+Average: 55.00
+Stddev: 28.72
+Median: 55.00
 
-name:score,grade
 A10:100.0,A+
 A9:90.0,A+
 A8:80.0,A-

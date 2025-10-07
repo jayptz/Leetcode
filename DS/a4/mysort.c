@@ -20,6 +20,7 @@ int cmp(void *x, void *y) {
 }   
 
 
+
 /**
  * Use selection sort algorithm to sort array of pointers such that their pointed values 
  * are in increasing order.
@@ -33,7 +34,7 @@ void select_sort(void *a[], int left, int right){
     for (int i = left; i <= right; ++i) {
         int k = i;
         for (int j = i + 1; j <= right; ++j) {
-            if (cmp_default(a[j], a[k]) < 0) k = j;
+            if (cmp(a[j], a[k]) < 0) k = j;
         }
         if (k != i) swap(&a[i], &a[k]);
     }
@@ -54,8 +55,8 @@ void quick_sort(void *a[], int left, int right){
     int j = right;
 
     while (i <= j) {
-        while (i <= right && cmp_default(a[i], a[left]) <= 0) i++;
-        while (j >= left && cmp_default(a[j], a[left]) > 0)  j--;
+        while (i <= right && cmp(a[i], a[left]) <= 0) i++;
+        while (j >= left && cmp(a[j], a[left]) > 0)  j--;
         if (i < j) {
             swap(&a[i], &a[j]);
         }
@@ -65,6 +66,7 @@ void quick_sort(void *a[], int left, int right){
     if (left < j - 1)  quick_sort(a, left, j - 1);
     if (j + 1 < right) quick_sort(a, j + 1, right);
 }
+
 
 
 /**
@@ -77,7 +79,7 @@ void quick_sort(void *a[], int left, int right){
  * @param (*cmp) - pointer to a comparison function used to compaire pointers by their pointed values.
  */
 void my_sort(void *a[], int left, int right, int (*cmp)(void*, void*) ){
-    if (!a || left >= right) return;
+    if (!a || left >= right || !cmp) return;
 
     int i = left + 1;
     int j = right;
@@ -89,11 +91,6 @@ void my_sort(void *a[], int left, int right, int (*cmp)(void*, void*) ){
     }
     swap(&a[left], &a[j]);
 
-    if (left < j - 1)  quick_sort_with_cmp(a, left, j - 1, cmp);
-    if (j + 1 < right) quick_sort_with_cmp(a, j + 1, right, cmp);
-}
-
-void my_sort(void *a[], int left, int right, int (*cmp)(void*, void*)) {
-    if (!a || left >= right || !cmp) return;
-    quick_sort_with_cmp(a, left, right, cmp);
+    if (left < j - 1)  my_sort(a, left, j - 1, cmp);
+    if (j + 1 < right) my_sort(a, j + 1, right, cmp);
 }
