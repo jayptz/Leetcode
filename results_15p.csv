@@ -1,0 +1,4 @@
+heuristic,avg_steps,avg_expanded,avg_time
+h1,7.40,13.0,0.0001
+h2,7.40,9.9,0.0001
+h3,7.40,9.8,0.0005
