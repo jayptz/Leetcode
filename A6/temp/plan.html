@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Execution Plan – Route Revenue Ranking Query</h3>
+<p class="text-muted">
+  This plan corresponds to the EXPLAIN ANALYZE we discussed in Assignment 4.
+</p>
+
+<h6>SQL</h6>
+<pre class="bg-light p-2 border rounded small">{{ code }}</pre>
+
+<h6 class="mt-3">Plan Output</h6>
+<pre class="bg-light p-2 border rounded small">
+{% for r in plan_rows %}
+{{ r[0] }}
+{% endfor %}
+</pre>
+{% endblock %}

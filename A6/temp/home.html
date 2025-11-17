@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>E-Ticket Reservation System Demo</h2>
+<p class="text-muted">
+  Assignment 6 – Application Demonstration. This page confirms that the database
+  is populated with realistic dummy data.
+</p>
+
+<h4>Table Row Counts</h4>
+<table class="table table-sm table-striped w-auto">
+  <thead>
+    <tr>
+      {% for c in cols %}
+        <th>{{ c }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in rows %}
+      <tr>
+        {% for v in r %}
+          <td>{{ v }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4 class="mt-4">Advanced Reports</h4>
+<ul>
+  <li><a href="/reports/top-spenders">Top 3 Spenders</a></li>
+  <li><a href="/reports/routes-above-avg-distance">Routes Above Average Distance</a></li>
+  <li><a href="/reports/rank-routes-revenue">Rank Routes by Captured Revenue</a></li>
+</ul>
+{% endblock %}
